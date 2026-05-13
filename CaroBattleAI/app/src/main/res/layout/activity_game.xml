@@ -5,15 +5,27 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="16dp"
-    android:background="#ECEFF1"> <TextView
-    android:id="@+id/tvTurn"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Lượt của: X"
-    android:textSize="26sp"
-    android:textStyle="bold"
-    android:layout_marginBottom="30dp"
-    android:textColor="#263238"/>
+    android:background="#ECEFF1">
+
+    <TextView
+        android:id="@+id/tvTurn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lượt của: X"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"
+        android:textColor="#263238"/>
+
+    <TextView
+        android:id="@+id/tvTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thời gian: 30s"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        android:layout_marginBottom="20dp"
+        android:textColor="#D32F2F"/>
 
     <GridLayout
         android:id="@+id/gridLayout"
@@ -22,7 +34,9 @@
         android:columnCount="3"
         android:rowCount="3"
         android:padding="6dp"
-        android:background="#90A4AE"> <Button android:id="@+id/btn_00" android:layout_width="100dp" android:layout_height="100dp" android:textSize="40sp" android:layout_margin="2dp" android:backgroundTint="#FFFFFF" android:textStyle="bold"/>
+        android:background="#90A4AE">
+
+        <Button android:id="@+id/btn_00" android:layout_width="100dp" android:layout_height="100dp" android:textSize="40sp" android:layout_margin="2dp" android:backgroundTint="#FFFFFF" android:textStyle="bold"/>
         <Button android:id="@+id/btn_01" android:layout_width="100dp" android:layout_height="100dp" android:textSize="40sp" android:layout_margin="2dp" android:backgroundTint="#FFFFFF" android:textStyle="bold"/>
         <Button android:id="@+id/btn_02" android:layout_width="100dp" android:layout_height="100dp" android:textSize="40sp" android:layout_margin="2dp" android:backgroundTint="#FFFFFF" android:textStyle="bold"/>
 
@@ -33,17 +47,31 @@
         <Button android:id="@+id/btn_20" android:layout_width="100dp" android:layout_height="100dp" android:textSize="40sp" android:layout_margin="2dp" android:backgroundTint="#FFFFFF" android:textStyle="bold"/>
         <Button android:id="@+id/btn_21" android:layout_width="100dp" android:layout_height="100dp" android:textSize="40sp" android:layout_margin="2dp" android:backgroundTint="#FFFFFF" android:textStyle="bold"/>
         <Button android:id="@+id/btn_22" android:layout_width="100dp" android:layout_height="100dp" android:textSize="40sp" android:layout_margin="2dp" android:backgroundTint="#FFFFFF" android:textStyle="bold"/>
-
     </GridLayout>
 
-    <Button
-        android:id="@+id/btnReset"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:text="CHƠI LẠI"
-        android:textSize="18sp"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="#FF5722"
-        android:textColor="#FFFFFF"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="30dp">
+
+        <Button
+            android:id="@+id/btnReset"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:text="CHƠI LẠI"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="#FF5722"
+            android:textColor="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/btnSurrender"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:text="XIN THUA"
+            android:backgroundTint="#757575"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
 
 </LinearLayout>

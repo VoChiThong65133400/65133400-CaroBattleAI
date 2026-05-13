@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
         // 4. Xử lý khi nhấn nút "Lịch sử"
         btnHistory.setOnClickListener(v -> {
-            // T
+            Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+            startActivity(intent);
         });
     }
 }

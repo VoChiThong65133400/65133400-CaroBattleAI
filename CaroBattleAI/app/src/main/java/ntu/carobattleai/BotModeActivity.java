@@ -1,5 +1,6 @@
 package ntu.carobattleai;
 
+import android.content.Intent; // Thêm dòng này để dùng Intent
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
@@ -28,6 +29,14 @@ public class BotModeActivity extends AppCompatActivity {
 
     private void startBotGame(String level) {
         Toast.makeText(this, "Đã chọn mức: " + level, Toast.LENGTH_SHORT).show();
-        // Sau này sẽ truyền 'level' sang màn hình GameActivity
+
+        // Tạo một Intent để chuyển từ màn hình chọn độ khó sang màn hình chơi game (PlayWithBotActivity)
+        Intent intent = new Intent(BotModeActivity.this, PlayWithBotActivity.class);
+
+        // Gửi kèm thông tin về độ khó sang màn hình tiếp theo
+        intent.putExtra("DIFFICULTY", level);
+
+        // Bắt đầu chuyển màn hình
+        startActivity(intent);
     }
 }

@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CaroBattleAI">
         <activity
+            android:name=".HistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PlayWithBotActivity"
+            android:exported="false" />
+        <activity
             android:name=".GameActivity"
             android:exported="false" />
         <activity
@@ -19,9 +25,6 @@
             android:exported="false" />
         <activity
             android:name=".BotModeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainMenuActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
