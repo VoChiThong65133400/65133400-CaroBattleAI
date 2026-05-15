@@ -1,77 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     android:padding="16dp"
-    android:background="#ECEFF1">
-
-    <TextView
-        android:id="@+id/tvTurn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lượt của: X"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="10dp"
-        android:textColor="#263238"/>
-
-    <TextView
-        android:id="@+id/tvTimer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Thời gian: 30s"
-        android:textSize="20sp"
-        android:textStyle="italic"
-        android:layout_marginBottom="20dp"
-        android:textColor="#D32F2F"/>
-
-    <GridLayout
-        android:id="@+id/gridLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:columnCount="3"
-        android:rowCount="3"
-        android:padding="6dp"
-        android:background="#90A4AE">
-
-        <Button android:id="@+id/btn_00" android:layout_width="100dp" android:layout_height="100dp" android:textSize="40sp" android:layout_margin="2dp" android:backgroundTint="#FFFFFF" android:textStyle="bold"/>
-        <Button android:id="@+id/btn_01" android:layout_width="100dp" android:layout_height="100dp" android:textSize="40sp" android:layout_margin="2dp" android:backgroundTint="#FFFFFF" android:textStyle="bold"/>
-        <Button android:id="@+id/btn_02" android:layout_width="100dp" android:layout_height="100dp" android:textSize="40sp" android:layout_margin="2dp" android:backgroundTint="#FFFFFF" android:textStyle="bold"/>
-
-        <Button android:id="@+id/btn_10" android:layout_width="100dp" android:layout_height="100dp" android:textSize="40sp" android:layout_margin="2dp" android:backgroundTint="#FFFFFF" android:textStyle="bold"/>
-        <Button android:id="@+id/btn_11" android:layout_width="100dp" android:layout_height="100dp" android:textSize="40sp" android:layout_margin="2dp" android:backgroundTint="#FFFFFF" android:textStyle="bold"/>
-        <Button android:id="@+id/btn_12" android:layout_width="100dp" android:layout_height="100dp" android:textSize="40sp" android:layout_margin="2dp" android:backgroundTint="#FFFFFF" android:textStyle="bold"/>
-
-        <Button android:id="@+id/btn_20" android:layout_width="100dp" android:layout_height="100dp" android:textSize="40sp" android:layout_margin="2dp" android:backgroundTint="#FFFFFF" android:textStyle="bold"/>
-        <Button android:id="@+id/btn_21" android:layout_width="100dp" android:layout_height="100dp" android:textSize="40sp" android:layout_margin="2dp" android:backgroundTint="#FFFFFF" android:textStyle="bold"/>
-        <Button android:id="@+id/btn_22" android:layout_width="100dp" android:layout_height="100dp" android:textSize="40sp" android:layout_margin="2dp" android:backgroundTint="#FFFFFF" android:textStyle="bold"/>
-    </GridLayout>
+    android:background="@drawable/bg_main">
 
     <LinearLayout
+        android:id="@+id/layoutPlayerX"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="30dp">
+        android:padding="15dp"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical"
+        android:background="@drawable/player_x_bg_neon">
 
-        <Button
-            android:id="@+id/btnReset"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:text="CHƠI LẠI"
-            android:layout_marginEnd="10dp"
-            android:backgroundTint="#FF5722"
-            android:textColor="#FFFFFF"/>
+        <androidx.cardview.widget.CardView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:cardCornerRadius="35dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="#1A00FFFF">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_player_default"
+                android:scaleType="centerCrop"
+                android:padding="5dp"/>
+        </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/btnSurrender"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:text="XIN THUA"
-            android:backgroundTint="#757575"
-            android:textColor="#FFFFFF"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="15dp">
+            <TextView
+                android:id="@+id/tvPlayerXName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Người chơi X"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"/>
+            <TextView
+                android:id="@+id/tvPlayerXTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30s"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="#00FFFF"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:textColor="#00FFFF"/>
     </LinearLayout>
 
-</LinearLayout>
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="3"
+        android:layout_centerInParent="true"
+        android:padding="10dp"
+        android:useDefaultMargins="true">
+
+        <Button android:id="@+id/btn_00" android:layout_width="100dp" android:layout_height="100dp" android:textSize="45sp" android:layout_rowWeight="1" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="@drawable/cell_style" android:textColor="#FFFFFF" android:textStyle="bold"/>
+        <Button android:id="@+id/btn_01" android:layout_width="100dp" android:layout_height="100dp" android:textSize="45sp" android:layout_rowWeight="1" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="@drawable/cell_style" android:textColor="#FFFFFF" android:textStyle="bold"/>
+        <Button android:id="@+id/btn_02" android:layout_width="100dp" android:layout_height="100dp" android:textSize="45sp" android:layout_rowWeight="1" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="@drawable/cell_style" android:textColor="#FFFFFF" android:textStyle="bold"/>
+        <Button android:id="@+id/btn_10" android:layout_width="100dp" android:layout_height="100dp" android:textSize="45sp" android:layout_rowWeight="1" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="@drawable/cell_style" android:textColor="#FFFFFF" android:textStyle="bold"/>
+        <Button android:id="@+id/btn_11" android:layout_width="100dp" android:layout_height="100dp" android:textSize="45sp" android:layout_rowWeight="1" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="@drawable/cell_style" android:textColor="#FFFFFF" android:textStyle="bold"/>
+        <Button android:id="@+id/btn_12" android:layout_width="100dp" android:layout_height="100dp" android:textSize="45sp" android:layout_rowWeight="1" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="@drawable/cell_style" android:textColor="#FFFFFF" android:textStyle="bold"/>
+        <Button android:id="@+id/btn_20" android:layout_width="100dp" android:layout_height="100dp" android:textSize="45sp" android:layout_rowWeight="1" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="@drawable/cell_style" android:textColor="#FFFFFF" android:textStyle="bold"/>
+        <Button android:id="@+id/btn_21" android:layout_width="100dp" android:layout_height="100dp" android:textSize="45sp" android:layout_rowWeight="1" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="@drawable/cell_style" android:textColor="#FFFFFF" android:textStyle="bold"/>
+        <Button android:id="@+id/btn_22" android:layout_width="100dp" android:layout_height="100dp" android:textSize="45sp" android:layout_rowWeight="1" android:layout_columnWeight="1" android:layout_margin="4dp" android:background="@drawable/cell_style" android:textColor="#FFFFFF" android:textStyle="bold"/>
+    </GridLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutPlayerO"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="15dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:alpha="0.4"
+        android:background="@drawable/player_o_bg_neon">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:cardCornerRadius="35dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="#1AFF007F">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_player_default"
+                android:scaleType="centerCrop"
+                android:padding="5dp"/>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="15dp">
+            <TextView
+                android:id="@+id/tvPlayerOName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Người chơi O"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"/>
+            <TextView
+                android:id="@+id/tvPlayerOTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00s"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="#FF007F"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="O"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:textColor="#FF007F"/>
+    </LinearLayout>
+
+</RelativeLayout>

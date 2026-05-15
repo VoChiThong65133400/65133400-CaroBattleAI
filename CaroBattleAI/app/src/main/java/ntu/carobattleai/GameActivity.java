@@ -1,13 +1,16 @@
 package ntu.carobattleai;
 
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,83 +26,138 @@ import java.util.Random;
 public class GameActivity extends AppCompatActivity {
 
     private Button[][] buttons = new Button[3][3];
-    private boolean player1Turn;
-    private TextView tvTurn, tvTimer;
+    private boolean player1Turn; // True = X đi trước, False = O đi trước
+
+    private LinearLayout layoutPlayerX, layoutPlayerO;
+    private TextView tvPlayerXName, tvPlayerOName;
+    private TextView tvPlayerXTime, tvPlayerOTime;
+
     private String player1Name, player2Name;
     private CountDownTimer countDownTimer;
 
     private LinkedList<Button> xQueue = new LinkedList<>();
     private LinkedList<Button> oQueue = new LinkedList<>();
 
+    private MediaPlayer moveSound;
+    private MediaPlayer winSound;
+
+    private int flashCount = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        moveSound = MediaPlayer.create(this, R.raw.move_sound);
+        winSound = MediaPlayer.create(this, R.raw.win_sound);
+
+        // Lấy tên người chơi
         player1Name = getIntent().getStringExtra("p1");
         player2Name = getIntent().getStringExtra("p2");
         if (player1Name == null) player1Name = "Người chơi X";
         if (player2Name == null) player2Name = "Người chơi O";
 
-        tvTurn = findViewById(R.id.tvTurn);
-        tvTimer = findViewById(R.id.tvTimer);
 
-        // Quyết định ngẫu nhiên ai đi trước
-        player1Turn = new Random().nextBoolean();
-        String starter = player1Turn ? player1Name : player2Name;
-        Toast.makeText(this, "Trọng tài: " + starter + " đi trước!", Toast.LENGTH_LONG).show();
+        layoutPlayerX = findViewById(R.id.layoutPlayerX);
+        layoutPlayerO = findViewById(R.id.layoutPlayerO);
+        tvPlayerXName = findViewById(R.id.tvPlayerXName);
+        tvPlayerOName = findViewById(R.id.tvPlayerOName);
+        tvPlayerXTime = findViewById(R.id.tvPlayerXTime);
+        tvPlayerOTime = findViewById(R.id.tvPlayerOTime);
 
-        updateTurnText();
-        startTimer();
+        // Gán tên người chơi
+        tvPlayerXName.setText(player1Name);
+        tvPlayerOName.setText(player2Name);
 
+        // Khởi tạo các nút bấm (Bàn cờ)
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 String buttonID = "btn_" + i + j;
                 int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
                 buttons[i][j] = findViewById(resID);
                 buttons[i][j].setOnClickListener(v -> onButtonClick((Button) v));
+                buttons[i][j].setEnabled(false);
             }
         }
 
-        findViewById(R.id.btnReset).setOnClickListener(v -> resetGame());
-        //Xác nhận khi nhấn nút xin thua
-        findViewById(R.id.btnSurrender).setOnClickListener(v -> {
-            String currentPlayer = player1Turn ? player1Name : player2Name;
-
-            new AlertDialog.Builder(this)
-                    .setTitle("Xác nhận đầu hàng")
-                    .setMessage(currentPlayer + " ơi, bạn thực sự muốn xin thua sao?")
-                    .setPositiveButton("Đồng ý", (dialog, which) -> {
-                        String winner = player1Turn ? player2Name : player1Name;
-                        showWinDialog(currentPlayer + " đã xin thua! " + winner + " thắng.");
-                    })
-                    .setNegativeButton("Tiếp tục đấu", null)
-                    .show();
-        });
+        // Bắt đầu quay số ngẫu nhiên chọn người đi trước
+        showRandomStarterDialog();
     }
 
-    private void startTimer() {
-        if (countDownTimer != null) countDownTimer.cancel();
-        countDownTimer = new CountDownTimer(30000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                tvTimer.setText("Thời gian: " + millisUntilFinished / 1000 + "s");
-                if (millisUntilFinished < 6000) tvTimer.setTextColor(Color.RED);
-                else tvTimer.setTextColor(Color.parseColor("#D32F2F"));
+    private void showRandomStarterDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(null)
+                .setMessage("Người chơi đi trước là...")
+                .setCancelable(false)
+                .create();
+        dialog.show();
+
+        // Chỉnh nền Dialog tối
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.background_dark);
+        }
+
+        TextView messageView = dialog.findViewById(android.R.id.message);
+        if (messageView != null) {
+            messageView.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
+            messageView.setTextSize(22);
+            messageView.setTextColor(Color.WHITE);
+        }
+
+        flashCount = 0;
+        Handler handler = new Handler();
+
+        Runnable flashRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (flashCount < 16) {
+                    if (flashCount % 2 == 0) {
+                        dialog.setMessage("Người chơi đi trước là...\n\n X ");
+                        messageView.setTextColor(Color.parseColor("#00FFFF")); // Nhấp nháy Xanh
+                    } else {
+                        dialog.setMessage("Người chơi đi trước là...\n\n O ");
+                        messageView.setTextColor(Color.parseColor("#FF007F")); // Nhấp nháy Hồng
+                    }
+                    flashCount++;
+                    handler.postDelayed(this, 150);
+                } else {
+                    // KẾT THÚC: Chọn người thắng thực sự
+                    player1Turn = new Random().nextBoolean();
+                    String starterSymbol = player1Turn ? "X" : "O";
+                    String starterName = player1Turn ? player1Name : player2Name;
+                    int finalColor = player1Turn ? Color.parseColor("#00FFFF") : Color.parseColor("#FF007F");
+
+                    messageView.setTextColor(Color.WHITE);
+                    dialog.setMessage("Người chơi đi trước là...\n\n " + starterSymbol + " \n\nChúc mừng " + starterName + "!");
+
+                    // Highlight quân cờ thắng cuộc
+                    handler.postDelayed(() -> {
+                        if (dialog.isShowing()) dialog.dismiss();
+                        for (int i = 0; i < 3; i++) {
+                            for (int j = 0; j < 3; j++) buttons[i][j].setEnabled(true);
+                        }
+                        //Cập nhật lượt đi và đồng hồ
+                        updateTurnDisplay();
+                        startTimer();
+                    }, 2000);
+                }
             }
-            public void onFinish() {
-                String winner = player1Turn ? player2Name : player1Name;
-                showWinDialog("Hết giờ! " + winner + " thắng.");
-            }
-        }.start();
+        };
+        handler.post(flashRunnable);
     }
 
     private void onButtonClick(Button b) {
         if (!b.getText().toString().equals("")) return;
 
+        if (moveSound != null) moveSound.start();
+
         if (player1Turn) {
+            // Lượt của X
             if (oQueue.size() == 3) removeOldestPiece(oQueue);
             b.setText("X");
-            b.setTextColor(Color.BLUE);
+            b.setTextColor(Color.parseColor("#00FFFF")); // Xanh Cyan
+            b.setShadowLayer(15f, 0f, 0f, Color.parseColor("#00FFFF"));
+
             xQueue.add(b);
             if (checkForWin()) {
                 showWinDialog(player1Name + " thắng!");
@@ -108,9 +166,12 @@ public class GameActivity extends AppCompatActivity {
             if (xQueue.size() == 3) warnOldestPiece(xQueue);
             player1Turn = false;
         } else {
+            // Lượt của O
             if (xQueue.size() == 3) removeOldestPiece(xQueue);
             b.setText("O");
-            b.setTextColor(Color.RED);
+            b.setTextColor(Color.parseColor("#FF007F")); // Hồng Neon
+            b.setShadowLayer(15f, 0f, 0f, Color.parseColor("#FF007F"));
+
             oQueue.add(b);
             if (checkForWin()) {
                 showWinDialog(player2Name + " thắng!");
@@ -119,12 +180,75 @@ public class GameActivity extends AppCompatActivity {
             if (oQueue.size() == 3) warnOldestPiece(oQueue);
             player1Turn = true;
         }
-        updateTurnText();
+        // ĐỔI LƯỢT ĐI
+        updateTurnDisplay();
         startTimer();
     }
 
-    private void updateTurnText() {
-        tvTurn.setText("Lượt của: " + (player1Turn ? player1Name : player2Name));
+    private void showWinDialog(String message) {
+        if (countDownTimer != null) countDownTimer.cancel();
+        if (winSound != null) winSound.start();
+
+        saveGameHistory(message);
+        new AlertDialog.Builder(this)
+                .setTitle("Kết thúc")
+                .setMessage(message)
+                .setPositiveButton("Chơi lại", (dialog, which) -> resetGame())
+                .setNegativeButton("Thoát", (dialog, which) -> finish())
+                .setCancelable(false)
+                .show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (moveSound != null) moveSound.release();
+        if (winSound != null) winSound.release();
+        if (countDownTimer != null) countDownTimer.cancel();
+    }
+
+    //Hàm bắt đầu đồng hồ mới
+    private void startTimer() {
+        if (countDownTimer != null) countDownTimer.cancel();
+
+        // Đặt lại text thời gian cho cả 2 khung
+        tvPlayerXTime.setText("??s");
+        tvPlayerOTime.setText("??s");
+
+        countDownTimer = new CountDownTimer(30000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                long seconds = millisUntilFinished / 1000;
+
+                if (player1Turn) {
+                    // Cập nhật cho X, khung O tối
+                    tvPlayerXTime.setText(seconds + "s");
+                    tvPlayerXTime.setTextColor(Color.parseColor("#00FFFF")); // Xanh
+                    if (seconds < 6) tvPlayerXTime.setTextColor(Color.RED);
+                } else {
+                    // Cập nhật cho O, khung X tối
+                    tvPlayerOTime.setText(seconds + "s");
+                    tvPlayerOTime.setTextColor(Color.parseColor("#FF007F")); // Hồng
+                    if (seconds < 6) tvPlayerOTime.setTextColor(Color.RED);
+                }
+            }
+            public void onFinish() {
+                String winner = player1Turn ? player2Name : player1Name;
+                showWinDialog("Hết giờ! " + winner + " thắng.");
+            }
+        }.start();
+    }
+
+    //Hàm cập nhật lượt đi và sáng khung
+    private void updateTurnDisplay() {
+        if (player1Turn) {
+
+            layoutPlayerX.setAlpha(1.0f);
+            layoutPlayerO.setAlpha(0.4f);
+        } else {
+
+            layoutPlayerO.setAlpha(1.0f);
+            layoutPlayerX.setAlpha(0.4f);
+        }
     }
 
     private void warnOldestPiece(LinkedList<Button> queue) {
@@ -140,6 +264,7 @@ public class GameActivity extends AppCompatActivity {
         if (oldest != null) {
             oldest.clearAnimation();
             oldest.setText("");
+            oldest.setShadowLayer(0, 0, 0, 0);
         }
     }
 
@@ -169,29 +294,18 @@ public class GameActivity extends AppCompatActivity {
         return false;
     }
 
-    private void showWinDialog(String message) {
-        if (countDownTimer != null) countDownTimer.cancel();
-        saveGameHistory(message);
-        new AlertDialog.Builder(this)
-                .setTitle("Kết thúc")
-                .setMessage(message)
-                .setPositiveButton("Chơi lại", (dialog, which) -> resetGame())
-                .setNegativeButton("Thoát", (dialog, which) -> finish())
-                .setCancelable(false)
-                .show();
-    }
-
     private void resetGame() {
-        for (int i = 0; i < 3; i++) for (int j = 0; j < 3; j++) { buttons[i][j].setText(""); buttons[i][j].clearAnimation(); }
-        xQueue.clear(); oQueue.clear();
-        player1Turn = new Random().nextBoolean();
-        updateTurnText();
-        startTimer();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
         if (countDownTimer != null) countDownTimer.cancel();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                buttons[i][j].setText("");
+                buttons[i][j].clearAnimation();
+                buttons[i][j].setShadowLayer(0, 0, 0, 0);
+                buttons[i][j].setEnabled(false);
+            }
+        }
+        xQueue.clear();
+        oQueue.clear();
+        showRandomStarterDialog();
     }
 }
