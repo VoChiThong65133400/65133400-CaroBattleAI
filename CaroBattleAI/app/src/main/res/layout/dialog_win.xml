@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:background="@drawable/player_x_bg_neon"> <TextView
+    android:id="@+id/tvDialogTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="KẾT THÚC"
+    android:textSize="26sp"
+    android:textStyle="bold"
+    android:textColor="#00FFFF"
+    android:shadowColor="#00FFFF"
+    android:shadowRadius="15"/>
+
+    <TextView
+        android:id="@+id/tvDialogMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chúc mừng! Bạn đã thắng."
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="25dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btnDialogExit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:text="Thoát"
+            android:textColor="#FF007F"
+            android:background="@drawable/cell_style"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/btnDialogRestart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:text="Chơi lại"
+            android:textColor="#00FFFF"
+            android:background="@drawable/cell_style"
+            android:textStyle="bold"/>
+    </LinearLayout>
+</LinearLayout>

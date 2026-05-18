@@ -30,7 +30,7 @@ public class BotModeActivity extends AppCompatActivity {
     private void startBotGame(String level) {
         Toast.makeText(this, "Đã chọn mức: " + level, Toast.LENGTH_SHORT).show();
 
-        // Tạo một Intent để chuyển từ màn hình chọn độ khó sang màn hình chơi game (PlayWithBotActivity)
+        // Tạo một Intent để chuyển từ màn hình chọn độ khó sang màn hình chơi game
         Intent intent = new Intent(BotModeActivity.this, PlayWithBotActivity.class);
 
         // Gửi kèm thông tin về độ khó sang màn hình tiếp theo

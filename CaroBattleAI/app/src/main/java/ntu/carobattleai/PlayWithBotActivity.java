@@ -223,13 +223,48 @@ public class PlayWithBotActivity extends AppCompatActivity {
     private void showWinDialog(String msg) {
         if (countDownTimer != null) countDownTimer.cancel();
         saveGameHistory(msg);
-        new AlertDialog.Builder(this)
-                .setTitle("Kết thúc")
-                .setMessage(msg)
-                .setPositiveButton("Chơi lại", (d, w) -> resetGame())
-                .setNegativeButton("Thoát", (d, w) -> finish())
-                .setCancelable(false)
-                .show();
+
+        // 1. Khởi tạo Dialog với style trong suốt để không bị viền trắng đè lên viền Neon
+        android.app.Dialog dialog = new android.app.Dialog(this);
+        dialog.setContentView(R.layout.dialog_win);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
+        dialog.setCancelable(false); // Không cho bấm ra ngoài để tắt
+
+        // 2. Ánh xạ các View trong Dialog
+        TextView tvDialogTitle = dialog.findViewById(R.id.tvDialogTitle);
+        TextView tvDialogMessage = dialog.findViewById(R.id.tvDialogMessage);
+        Button btnExit = dialog.findViewById(R.id.btnDialogExit);
+        Button btnRestart = dialog.findViewById(R.id.btnDialogRestart);
+
+        // 3. Hiển thị nội dung
+        tvDialogMessage.setText(msg);
+
+        // Tự động đổi màu tiêu đề theo kết quả cho đẹp: Thắng thì Xanh Cyan, Thua thì Hồng Neon
+        if (msg.contains("Bạn đã thắng") || msg.contains("Bạn thắng")) {
+            tvDialogTitle.setText("CHIẾN THẮNG");
+            tvDialogTitle.setTextColor(Color.parseColor("#00FFFF"));
+            tvDialogTitle.setShadowLayer(15f, 0f, 0f, Color.parseColor("#00FFFF"));
+        } else {
+            tvDialogTitle.setText("THẤT BẠI");
+            tvDialogTitle.setTextColor(Color.parseColor("#FF007F"));
+            tvDialogTitle.setShadowLayer(15f, 0f, 0f, Color.parseColor("#FF007F"));
+        }
+
+        // 4. Xử lý sự kiện click nút
+        btnRestart.setOnClickListener(v -> {
+            resetGame();
+            dialog.dismiss(); // Đóng dialog
+        });
+
+        btnExit.setOnClickListener(v -> {
+            dialog.dismiss();
+            finish(); // Thoát màn hình chơi
+        });
+
+        // 5. Hiển thị lên màn hình
+        dialog.show();
     }
 
     private void saveGameHistory(String result) {
