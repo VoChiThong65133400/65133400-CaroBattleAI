@@ -3,45 +3,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:background="#F5F5F5"
-    android:padding="24dp">
+    android:background="@drawable/bg_main">
 
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CARO BATTLE"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        android:textColor="#2C3E50"
-        android:layout_marginBottom="50dp"/>
-
-    <Button
-        android:id="@+id/btnVsBot"
+    <ImageView
+        android:id="@+id/ivLogoTitle"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="VS Máy (AI)"
-        android:textSize="18sp"
-        android:textAllCaps="false"
-        android:layout_marginBottom="15dp"/>
+        android:layout_height="320dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/logo_caro_battle" />
 
-    <Button
-        android:id="@+id/btnVsPlayer"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="VS Người"
-        android:textSize="18sp"
-        android:textAllCaps="false"
-        android:layout_marginBottom="15dp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:paddingTop="20dp">
 
-    <Button
-        android:id="@+id/btnHistory"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Lịch sử trận đấu"
-        android:textSize="18sp"
-        android:textAllCaps="false"
-        android:backgroundTint="#607D8B"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnVsBot"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="VS MÁY (AI)"
+            android:textSize="18sp"
+            android:textColor="#FF0000"
+            android:textStyle="bold"
+            android:background="@drawable/bg_button_red"
+            android:shadowColor="#FF0000"
+            android:shadowRadius="10"
+            android:layout_marginBottom="20dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnVsPlayer"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="VS NGƯỜI CHƠI"
+            android:textSize="18sp"
+            android:textColor="#00FFFF"
+            android:textStyle="bold"
+            android:background="@drawable/bg_button_cyan"
+            android:shadowColor="#00FFFF"
+            android:shadowRadius="10"
+            android:layout_marginBottom="20dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnHistory"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="LỊCH SỬ TRẬN ĐẤU"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:background="@drawable/bg_button_white"
+            android:shadowColor="#FFFFFF"
+            android:shadowRadius="10" />
+
+    </LinearLayout>
 
 </LinearLayout>
