@@ -31,7 +31,7 @@ public class TwoPlayerActivity extends AppCompatActivity {
             String name2 = edtPlayer2.getText().toString().trim();
 
             if (name1.isEmpty() || name2.isEmpty()) {
-                Toast.makeText(this, "Thông ơi, nhập đủ tên 2 người đã nhé!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Bạn ơi, nhập đủ tên 2 người đã nhé!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Chào mừng " + name1 + " và " + name2, Toast.LENGTH_SHORT).show();
 
